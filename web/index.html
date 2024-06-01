@@ -40,8 +40,13 @@
         <div>
           <button id="button-add" v-on:click="add()">+</button>
           <button id="button-substract" v-on:click="substract()">-</button>
+          <button id="button-multiply" v-on:click="multiply()">*</button>
+          <button id="button-divide" v-on:click="divide()">/</button>
+          <button id="button-power" v-on:click="power()">^</button>
+          <button id="button-sqrt" v-on:click="sqrt()">√</button>
+          <button id="button-log" v-on:click="log()">log</button>
         </div>
-        <div id="result-area">Result: {{ result  }}</div>
+        <div id="result-area">Result: {{ result }}</div>
         <div>
           History:
           <ul id="history-log">
@@ -51,7 +56,6 @@
       </div>
     </main>
     <script>
-      
       var calc = new Vue({
         el: "#calc",
         data: {
@@ -67,21 +71,40 @@
           substract: function() {
             this.apiCall('substract', this.op1, this.op2);
           },
+          multiply: function() {
+            this.apiCall('multiply', this.op1, this.op2);
+          },
+          divide: function() {
+            this.apiCall('divide', this.op1, this.op2);
+          },
+          power: function() {
+            this.apiCall('power', this.op1, this.op2);
+          },
+          sqrt: function() {
+            this.apiCall('sqrt', this.op1, null);
+          },
+          log: function() {
+            this.apiCall('log', this.op1, null);
+          },
           apiCall: function(func, op1, op2) {
-            var url = `${baseUrl}/calc/${func}/${op1}/${op2}`;
+            var url = `${baseUrl}/calc/${func}/${op1}` + (op2 !== null ? `/${op2}` : '');
             axios
-              .get(url)
-              .then(response => {
-                var entry = `GET ${url} (${response.statusText})`;
-                if (!!response.data) {
-                  entry = entry + ": " + response.data;
-                }
-                this.outputLog.push(entry);
-                this.result = response.data;
-              })
-              .catch(e => {
-                this.outputLog.push(e);
-              });
+            .get(url)
+            .then(response => {
+              var entry = `GET ${url} (${response.statusText})`;
+              if (response.data !== undefined && response.data !== null) {
+                entry = entry + ": " + response.data;
+                
+              }
+              this.outputLog.push(entry);
+              this.result = response.data;
+              
+            })
+            .catch(e => {
+              this.outputLog.push(e);
+              
+            });
+            
           }
         }
       });

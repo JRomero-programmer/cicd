@@ -19,3 +19,10 @@ def InvalidConvertToNumber(operand):
 
     except ValueError:
         raise TypeError("Operator cannot be converted to number")
+        
+def validate_permissions(expression, user):
+    # Lógica de validación de permisos
+    if user == "user1":
+        return True
+    else:
+        return False
