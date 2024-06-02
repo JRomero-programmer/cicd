@@ -39,7 +39,14 @@ pipeline {
                 to: 'jonatanrm35@gmail.com'
                 )
             junit 'results/*.xml'
-            cobertura coberturaReportFile: 'results/coverage.xml', failUnhealthy: false, failBuild: false, healthyTarget: [methodCoverage: 70, lineCoverage: 70]
+            cobertura coberturaReportFile: 'results/coverage.xml', 
+            failUnhealthy: true, 
+            failUnstable: true, 
+            autoUpdateHealth: false, 
+            autoUpdateStability: false, 
+            zoomCoverageChart: false, 
+            methodCoverageTargets: '70, 0, 0', 
+            lineCoverageTargets: '70, 0, 0'
             cleanWs()
         }
     }
