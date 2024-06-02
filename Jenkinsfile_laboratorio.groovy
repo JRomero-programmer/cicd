@@ -43,7 +43,7 @@ pipeline {
             
         }
         always {
-            recordCoverage qualityGates: [[criticality: 'NOTE', integerThreshold: 70, metric: 'MODULE', threshold: 70.0]], tools: [[parser: 'COBERTURA', pattern: 'coverage.xml']]
+            recordCoverage qualityGates: [[criticality: 'NOTE', integerThreshold: 70, metric: 'MODULE', threshold: 70.0]], tools: [[parser: 'COBERTURA', pattern: 'results/coverage.xml']]
             junit 'results/*.xml'
             cleanWs()
         }
