@@ -28,6 +28,17 @@ pipeline {
                 archiveArtifacts artifacts: 'results/cypress_result.xml', allowEmptyArchive: true
             }
         }
+        stage('Publicando Coverage Report') {
+            steps {
+                script {
+                    cobertura coberturaReportFile: 'results/coverage.xml'
+                    
+                }
+                
+            }
+            
+        }
+        
     }
     post {
         always {
