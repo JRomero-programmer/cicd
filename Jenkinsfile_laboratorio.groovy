@@ -30,23 +30,20 @@ pipeline {
         }
     }
     post {
-        always {
+        failure {
             emailext (
-                subject: "Build ${currentBuild.fullDisplayName}",
-                body: """<p>Build result: ${currentBuild.currentResult}</p>
-                <p>More details: ${env.BUILD_URL}</p>""",
+                subject: "Job fallido: ${currentBuild.fullDisplayName}",
+                body: """<p>Resultado del Job: ${currentBuild.currentResult}</p>
+                <p>Nombre del Job: ${env.JOB_NAME}</p>
+                <p>Número de ejecución: ${env.BUILD_NUMBER}</p>
+                <p>Para ver más detalles accede a la URL: ${env.BUILD_URL}</p>""",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                 to: 'jonatanrm35@gmail.com'
                 )
+            
+        }
+        always {
             junit 'results/*.xml'
-            cobertura coberturaReportFile: 'results/coverage.xml', 
-            failUnhealthy: true, 
-            failUnstable: true, 
-            autoUpdateHealth: false, 
-            autoUpdateStability: false, 
-            zoomCoverageChart: false, 
-            methodCoverageTargets: '70, 0, 0', 
-            lineCoverageTargets: '70, 0, 0'
             cleanWs()
         }
     }
