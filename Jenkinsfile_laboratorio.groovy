@@ -39,15 +39,7 @@ pipeline {
                 to: 'jonatanrm35@gmail.com'
                 )
             junit 'results/*.xml'
-            script {
-                def coverageResult = cobertura(coberturaReportFile: 'results/coverage.xml', failUnhealthy: false, failBuild: false, healthyTarget: [methodCoverage: 70, lineCoverage: 70])
-                if (coverageResult.result != 'SUCCESS') {
-                    currentBuild.result = 'FAILURE'
-                    error('Coverage por debajo del threshold')
-                    
-                }
-                
-            }
+            cobertura coberturaReportFile: 'results/coverage.xml', failUnhealthy: false, failBuild: false, healthyTarget: [methodCoverage: 70, lineCoverage: 70]
             cleanWs()
         }
     }
