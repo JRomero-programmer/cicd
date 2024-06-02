@@ -31,6 +31,13 @@ pipeline {
     }
     post {
         always {
+            emailext (
+                subject: "Build ${currentBuild.fullDisplayName}",
+                body: """<p>Build result: ${currentBuild.currentResult}</p>
+                <p>More details: ${env.BUILD_URL}</p>""",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                to: 'jonatanrm35@gmail.com'
+                )
             junit 'results/*.xml'
             cleanWs()
         }
